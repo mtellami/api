@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: ID!
-  name: String!
-  email: String!
-}
-
 type Query {
-  getUsers: [User!]!
+  hello: String!
 }
