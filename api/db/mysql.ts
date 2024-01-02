@@ -1,13 +1,14 @@
-import mysql from 'mysql2'
+import * as mysql from 'mysql2/promise'
 
 const db = mysql.createPool({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	database: process.env.DB_NAME,
+	host: 'localhost',
+	user: 'root',
+	password: 'password',
+	database: 'ordery',
 	waitForConnections: true,
 	connectionLimit: 10,
 	enableKeepAlive: true
-}).promise();
+});
 
 (async() => {
 	try {
@@ -16,6 +17,7 @@ const db = mysql.createPool({
 		connection.release()
 	} catch (err) {
 		console.error('Error connecting to MySQL: ', err)
+		process.exit(1)
 	}
 })()
 

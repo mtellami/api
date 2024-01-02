@@ -1,7 +1,7 @@
 export enum OrderStatus {
-	Requested,
-	Confirmed,
-	Delivered
+	Requested = 'requested',
+	Confirmed = 'confirmed',
+	Delivered = 'delivered'
 }
 
 export type Order = {
