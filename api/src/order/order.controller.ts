@@ -29,8 +29,8 @@ export class OrderController {
 	}
 
 	@Get(':id')
-	async getOrderById(@Req() req: Request, @Res() res: Response): Promise<void> {
-		res.status(200).json(req.order)
+	async getOrderById(@Req() req: Request): Promise<Order> {
+		return req.order
 	}
 
 	@Patch(':id')

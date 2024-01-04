@@ -7,7 +7,7 @@ import { Order } from "types/order";
 export class OrderFound implements NestMiddleware {
 	constructor(private readonly orderService: OrderService) {}
 
-	async use(req: Request, res: Response, next: NextFunction) {
+	async use(req: Request, _: Response, next: NextFunction) {
 		const id: number = parseInt(req.params.id)
 		if (isNaN(id)) {
 			throw new BadRequestException('Number Order Id Requered')

@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumberString, Length } from "class-validator"
+import { IsInt, IsNotEmpty, IsNumber, Length } from "class-validator"
 
 export class ProductDto {
 	@IsNotEmpty()
@@ -11,7 +11,7 @@ export class ProductDto {
 	@IsInt()
 	qte: number
 
-	@IsNumberString()
+	@IsNumber()
 	price: number
 
 	@Length(0, 15)

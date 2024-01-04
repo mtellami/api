@@ -43,4 +43,18 @@ export class ProductService {
 			throw new InternalServerErrorException
 		}
 	}
+
+	async getCategoryProducts(category: string): Promise<Product[]> {
+		try {
+			const [row] = await db.query<RowDataPacket[]>(
+				'SELECT * FROM `product` WHERE category = ?',
+				[category]
+			)
+			return row as Product[]
+		} catch (err) {
+			console.error(err)
+			throw new InternalServerErrorException
+		}
+	}
+
 }
