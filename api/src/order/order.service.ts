@@ -22,10 +22,7 @@ export class OrderService {
 				'SELECT * FROM `order` WHERE id = ?',
 				[id]
 			)
-			if (!row) {
-				return null
-			}
-			return row as Order
+			return !row ? null : row as Order
 		} catch (err) {
 			console.error(err)
 			throw new InternalServerErrorException

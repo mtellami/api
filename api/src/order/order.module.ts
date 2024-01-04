@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { OrderFound } from './order.found';
+import { OrderFound } from './order.middleware';
 
 @Module({
   providers: [OrderService],

@@ -1,20 +1,19 @@
-import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
-import db from '../../db/mysql'
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { Product } from 'types/product';
-import { RowDataPacket } from 'mysql2';
+import { ProductService } from './product.service';
+import { ProductDto } from 'dto/product.dto';
 
 @Controller('product')
 export class ProductController {
+	constructor(private readonly productService: ProductService) {}
+
 	@Get()
-	async getAll(): Promise<Product[]> {
-		try {
-			const [row] = await db.query<RowDataPacket[]>(
-				'SELECT * FROM `product`'
-			)
-			return row as Product[]
-		} catch (err) {
-			console.error(err)
-			throw new InternalServerErrorException
-		}
+	async getProducts(): Promise<Product[]> {
+		return this.productService.getAll()
+	}
+
+	@Post()
+	async addproduct(@Body() productDto: ProductDto): Promise<Product> {
+		return this.productService.createProduct(productDto)
 	}
 }
