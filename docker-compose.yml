@@ -14,20 +14,22 @@ services:
       - .env
     restart: always
 
-  # api:
-  #   container_name: api
-  #   image: api:ordery
-  #   build:
-  #     context: ./api
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - ordery
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - db
-  #   restart: always
+  api:
+    container_name: api
+    image: api:ordery
+    build:
+      context: ./api
+    ports:
+      - 3000:3000
+    networks:
+      - ordery
+    volumes:
+      - ./api:/home/node/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
 
 networks:
   ordery:

@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import db from 'db/mysql';
+import db from 'services/database.service';
 import { OrderDto } from 'dto/order.dto';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Order } from 'types/order';

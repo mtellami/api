@@ -10,11 +10,11 @@ export class ProductFound implements NestMiddleware {
 	async use(req: Request, _: Response, next: NextFunction) {
 		const id: number = parseInt(req.params.id)
 		if (isNaN(id)) {
-			throw new BadRequestException('Number Order Id Requered')
+			throw new BadRequestException('Invalid Product Id')
 		}
 		const product: Product = await this.productService.getById(id)
 		if (!product) {
-			throw new NotFoundException('Order Not Found')
+			throw new NotFoundException('Product Not Found')
 		}
 		req.product = product
 		next()

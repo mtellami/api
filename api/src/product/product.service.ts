@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import db from 'db/mysql';
+import db from 'services/database.service';
 import { ProductDto } from 'dto/product.dto';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Product } from 'types/product';
@@ -57,4 +57,19 @@ export class ProductService {
 		}
 	}
 
+	async updateProduct(id: number, product: ProductDto): Promise<Product> {
+		return {} as Product
+	}
+
+	async removeProduct(id: number): Promise<void> {
+		try {
+			await db.query(
+				'DELETE FROM `product` WHERE id = ?',
+				[id]
+			)
+		} catch (err) {
+			console.error(err)
+			throw new InternalServerErrorException
+		}
+	}
 }
