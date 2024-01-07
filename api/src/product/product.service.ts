@@ -1,10 +1,11 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import db from 'services/database.service';
-import { ProductDto } from 'dto/product.dto';
+import { CreateProductDto } from 'dto/createProduct.dto';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Product } from 'types/product';
 import { uploader } from 'services/cloud.service';
 import { unlink } from 'fs/promises';
+import { UpdateProductDto } from 'dto/updateProduct.dto';
 
 @Injectable()
 export class ProductService {
@@ -20,7 +21,7 @@ export class ProductService {
 		}
 	}
 
-	async createProduct(image: Express.Multer.File, product: ProductDto): Promise<Product> {
+	async createProduct(image: Express.Multer.File, product: CreateProductDto): Promise<Product> {
 		try {
 			const result = await uploader.upload(image.path)
 			await unlink(image.path)
@@ -61,9 +62,22 @@ export class ProductService {
 		}
 	}
 
-	async updateProduct(id: number, product: ProductDto): Promise<Product> {
-		// use multer
-		return {} as Product
+	async updateProduct(id: number, product: UpdateProductDto, image: Express.Multer.File): Promise<Product> {
+		try {
+			if (image) {
+				const result = await uploader.upload(image.path)
+				await unlink(image.path)
+				product.image = result.secure_url
+			}
+			await db.query(
+				`UPDATE \`product\` SET ${Object.keys(product).map(value => `${value} = ?`).join(', ')} WHERE id = ?`,
+				[...Object.keys(product).map(key => product[key]), id]
+			)
+			return this.getById(id)
+		} catch (err) {
+			console.error(err)
+			throw new InternalServerErrorException
+		}
 	}
 
 	async removeProduct(id: number): Promise<void> {
