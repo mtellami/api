@@ -18,11 +18,12 @@ export class ProductService {
 		}
 	}
 
-	async createProduct(product: ProductDto): Promise<Product> {
+	async createProduct(image: Express.Multer.File, product: ProductDto): Promise<Product> {
+		// use cloud service (cloudnary)
 		try {
 			const [row] =  await db.query<ResultSetHeader>(
-				'INSERT INTO `product` (name, image, qte, price, category) VALUES (?, ?, ?, ?, ?)',
-				[product.name, product.image, product.qte, product.price, product.category]
+				'INSERT INTO `product` (name, qte, price, category) VALUES (?, ?, ?, ?)',
+				[product.name, product.qte, product.price, product.category]
 			)
 			return this.getById(row.insertId)
 		} catch (err) {
@@ -58,6 +59,7 @@ export class ProductService {
 	}
 
 	async updateProduct(id: number, product: ProductDto): Promise<Product> {
+		// use multer
 		return {} as Product
 	}
 

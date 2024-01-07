@@ -1,7 +1,10 @@
 # compiled output
 api/dist
 api/node_modules
-api/.env
 
 # Environment variables
 .env
+api/.env
+
+# Tests
+api/uploads

@@ -7,12 +7,15 @@ import {
 	Patch,
 	Post,
 	Req,
-	Res
+	Res,
+    UploadedFile,
+    UseInterceptors
 } from '@nestjs/common';
 import { Product } from 'types/product';
 import { ProductService } from './product.service';
 import { ProductDto } from 'dto/product.dto';
 import { Request, Response } from 'express'
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('product')
 export class ProductController {
@@ -24,9 +27,9 @@ export class ProductController {
 	}
 
 	@Post()
-	async addproduct(@Body() productDto: ProductDto): Promise<Product> {
-		// use Multer and cloud for images
-		return this.productService.createProduct(productDto)
+	@UseInterceptors(FileInterceptor('image'))
+	async addproduct(@UploadedFile() image: Express.Multer.File, @Body() productDto: ProductDto): Promise<Product> {
+		return this.productService.createProduct(image, productDto)
 	}
 
 	@Get(':id')
@@ -39,10 +42,9 @@ export class ProductController {
 		return this.productService.getCategoryProducts(category)
 	}
 
-
 	@Patch(':id')
 	async updateProduct(@Param() id: number, @Body() productDto: ProductDto ): Promise<Product> {
-		// use Multer and cloud for images
+		// use Multer, cloud
 		return this.productService.updateProduct(id, productDto)
 	}
 	
