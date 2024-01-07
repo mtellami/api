@@ -3,6 +3,8 @@ import db from 'services/database.service';
 import { ProductDto } from 'dto/product.dto';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { Product } from 'types/product';
+import { uploader } from 'services/cloud.service';
+import { unlink } from 'fs/promises';
 
 @Injectable()
 export class ProductService {
@@ -19,11 +21,12 @@ export class ProductService {
 	}
 
 	async createProduct(image: Express.Multer.File, product: ProductDto): Promise<Product> {
-		// use cloud service (cloudnary)
 		try {
+			const result = await uploader.upload(image.path)
+			await unlink(image.path)
 			const [row] =  await db.query<ResultSetHeader>(
-				'INSERT INTO `product` (name, qte, price, category) VALUES (?, ?, ?, ?)',
-				[product.name, product.qte, product.price, product.category]
+				'INSERT INTO `product` (name, image, qte, price, category) VALUES (?, ?, ?, ?, ?)',
+				[product.name, result.secure_url,  product.qte, product.price, product.category]
 			)
 			return this.getById(row.insertId)
 		} catch (err) {
