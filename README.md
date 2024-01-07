@@ -1,6 +1,3 @@
 # RESTFUL API
 
-## Typescript
-## NestJs
-## MySQL
-## Cloudinary
+- Typescript / NestJs /MySQL / Cloudinary

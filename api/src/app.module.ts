@@ -8,9 +8,15 @@ import { ProductService } from './product/product.service';
 import { ProductController } from './product/product.controller';
 import { ProductModule } from './product/product.module';
 import { ConfigModule } from '@nestjs/config';
+import { MulterModule } from '@nestjs/platform-express';
+import MulterConfig from 'services/multer.service';
 
 @Module({
-  imports: [ConfigModule.forRoot(), OrderModule, ProductModule],
+  imports: [
+		ConfigModule.forRoot(),
+		OrderModule,
+		ProductModule,
+		MulterModule.register(MulterConfig)],
   controllers: [AppController, OrderController, ProductController],
   providers: [AppService, OrderService, ProductService],
 })
