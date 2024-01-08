@@ -8,8 +8,9 @@ import {
 	Post,
 	Req,
 	Res,
-    UploadedFile,
-    UseInterceptors
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { Product } from 'types/product';
 import { ProductService } from './product.service';
@@ -17,6 +18,7 @@ import { Request, Response } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateProductDto } from 'dto/createProduct.dto';
 import { UpdateProductDto } from 'dto/updateProduct.dto';
+import { ProductFound } from './product.guard';
 
 @Controller('product')
 export class ProductController {
@@ -34,6 +36,7 @@ export class ProductController {
 	}
 
 	@Get(':id')
+	@UseGuards(ProductFound)
 	async getProductById(@Req() req: Request): Promise<Product> {
 		return req.product
 	}
@@ -44,6 +47,7 @@ export class ProductController {
 	}
 
 	@Patch(':id')
+	@UseGuards(ProductFound)
 	@UseInterceptors(FileInterceptor('image'))
 	async updateProduct(
 		@Param('id') id: number,
@@ -53,6 +57,7 @@ export class ProductController {
 	}
 	
 	@Delete(':id')
+	@UseGuards(ProductFound)
 	async deleteProduct(@Param('id') id: number, @Res() res: Response): Promise<void> {
 		await this.productService.removeProduct(id)
 		res.status(200).json({ message: 'Product removed successfully' })
